@@ -1,0 +1,915 @@
+{
+  "name": "AI Posts Content Machine",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Generate materials for my next LinkedIn post.\n\nHere are the ideas that we've already used: {{ $json.mergedText }}.\n\nCome up with a new, super valuable and concrete post, and prepare all the needed materials for it:\n- idea\n- title\n- text\n- image description\n\nUse the least used bucket of content (out of my 4 buckets).\n\nBegin:",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=<details>\n<summary><strong>📋 ROLE</strong></summary>\n\nYou're an expert in viral LinkedIn posts content creation with 10 years of experience. You've created viral posts that have gotten 10 billion views in total.\n\n</details>\n\n<details>\n<summary><strong>🎯 OBJECTIVE</strong></summary>\n\nYour goal is to write a 1) name, 2) idea, 3) title, 4) text, and 5) image description for my next LinkedIn Post. They should be super valuable to my audience.\n\n</details>\n\n<details>\n<summary><strong>📊 SCENARIO</strong></summary>\n\nI run a LinkedIn blog about Finance and AI. My audience is finance professionals, CFOs, fintech founders, AI/ML engineers, data scientists, banking executives, investment analysts, and tech entrepreneurs interested in AI applications in finance. My goal is to help them leverage AI to transform financial operations with valuable, and practical content.\n\nI have 4 main buckets of content on my page:\n\n1) **Timeless principles** - Ideas for this posts are taken from timeless books and research: Thinking, Fast and Slow by Daniel Kahneman, Predictably Irrational by Dan Ariely, The Black Swan by Nassim Taleb, AI Superpowers by Kai-Fu Lee, and foundational AI/finance research papers.\n\n2) **Case studies** - For instance a case study breaking down how JPMorgan uses AI for fraud detection or how Stripe implemented ML for payment processing.\n\n3) **Innovation insights** - Latest AI trends and breakthroughs in finance with proof. For instance how generative AI reduced financial close time by 80% or how transformer models improved credit risk assessment.\n\n4) **AI implementation failures** - Breakdowns of interesting and famous AI adoption failures in finance and lessons learned.\n\nEvery post that I publish is focused solely on one of the content buckets. That makes my content more diverse and covering more relevant topics.\n\n</details>\n\n<details>\n<summary><strong>✅ EXPECTATION</strong></summary>\n\nWrite me:\n1. **Name** (short name for the post, less than 50 characters)\n2. **Idea** (detailed description in 3 sentences max)\n3. **Title** (the first sentence of the post, less than 80 characters, it should be ultra hooking)\n4. **Full text** of the post (200-300 words)\n5. **Image description** (the image is the first thing people will look at, so make it ultra hooking; write the image description to be super clear and ultra simple, so the AI image generator will precisely know what to generate; the image should be minimalistic)\n\nMake sure to have great: hook, retention, and reward at the end.\n\nThe post should clearly lead to a finance/AI insight.\n\nYour output should be in the JSON format.\n\nIdea should always start with a category: Timeless principle, Case study, Innovation insight, AI implementation failure.\n\n</details>\n\n<details>\n<summary><strong>💡 EXAMPLE OUTPUT</strong></summary>\n```json\n{\n  \"name\": \"The Power of Social Proof\",\n  \"idea\": \"Timeless principle: Social proof is a psychological phenomenon that influences decision-making by showing how others' actions affect our own choices. It works universally across physical spaces and digital platforms. Marketers who strategically implement social proof elements can significantly increase conversion rates and customer trust.\",\n  \"title\": \"Why we can't resist looking up when others do (and what it means for sales)\",\n  \"text\": \"Why we can't resist looking up when others do (and what it means for sales)\\n\\nA psychology experiment once placed actors on a street corner to stare upward at nothing.\\n\\nWithin minutes, dozens of passersby stopped to look up too.\\n\\nThis is social proof in action—our natural tendency to follow others when uncertain.\\n\\nIn marketing, this same principle powers your conversion rates.\\n\\nNotice how differently you perceive:\\n\\n• A product with 5,000+ five-star reviews\\n• A service used by \\\"67% of Fortune 500 companies\\\"\\n• A landing page showing \\\"10,000+ satisfied customers\\\"\\n\\nCompared to identical offerings without these trust signals.\\n\\nBut here's what many marketers miss: social proof must feel authentic to work.\\n\\nGeneric testimonials or inflated numbers create skepticism, not confidence.\\n\\nThe most effective social proof strategies I've implemented for clients:\\n\\n1. Specificity: \\\"503 marketing agencies use our platform daily\\\" beats \\\"Hundreds of satisfied customers\\\"\\n\\n2. Relevance: Highlight testimonials from users who match your prospect's profile\\n\\n3. Recency: Fresh testimonials outperform older ones by 35% in our tests\\n\\n4. Visibility: Place social proof elements near decision points (like \\\"Buy Now\\\" buttons)\\n\\nImplement these four tactics, and you'll see the same psychological force that makes us look up at the sky work to increase your conversion rates.\\n\\nWhat's your most effective social proof strategy? Share below.\",\n  \"image\": \"Simple black background with grainy texture. Six basic stick figure silhouettes in white - five figures on the left all looking up, one figure on the right just starting to look up. Bold text in Inter Bold font at the center reads \\\"FOLLOW THE CROWD\\\" with \\\"FOLLOW\\\" in white and \\\"CROWD\\\" in light green (#cff150). No other elements or details. Clean, minimal design with plenty of empty space.\"\n}\n```\n\n</details>\n\n<details>\n<summary><strong>📝 NOTES</strong></summary>\n\n- THE BACKGROUND OF THE IMAGE SHOULD ALWAYS BE BLACK AND DARK GRAINY FILM\n- To accomplish your task you can use the web search.\n\n</details>"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        1104,
+        -96
+      ],
+      "id": "31155f65-0d69-4ff8-a655-b41265c5b8d2",
+      "name": "Idea Generator",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "content": "# Generate a New Post Idea and All Materials",
+        "height": 480,
+        "width": 980,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        400,
+        -176
+      ],
+      "typeVersion": 1,
+      "id": "50e88a32-5658-432e-a865-3bf8f48618ce",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "content": "# Generate an Image and Save",
+        "height": 480,
+        "width": 1140,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1392,
+        -176
+      ],
+      "typeVersion": 1,
+      "id": "88b00ffc-9287-466d-91bb-b64788cb1605",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\t\"name\": \"name\",\n    \"idea\": \"idea\",\n    \"title\": \"title\",\n    \"text\": \"text\",\n    \"image\": \"image\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        1216,
+        128
+      ],
+      "id": "ca7fef3f-2b5c-4cbb-9da9-91ffbbb22777",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "name": "web_search",
+        "description": "Call this tool to make a web search query using Perplexity AI. It will automatically look at multiple relevant websites and combine all the valuable information in one clean response.",
+        "workflowId": {
+          "__rl": true,
+          "value": "eALld0YaOZuUCU5q",
+          "mode": "list",
+          "cachedResultName": "Perplexity Research"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [
+            "query"
+          ],
+          "schema": [
+            {
+              "id": "query",
+              "displayName": "query",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        1024,
+        176
+      ],
+      "id": "e3ed9650-5ab2-4620-ba44-4696f264ae8b",
+      "name": "Perplexity Research"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get all incoming items\nconst items = $input.all();\n\n// Extract the text field from each item\nconst texts = items.map(item => item.json.idea);\n\n// Concatenate them (adjust the separator as needed)\nconst concatenated = texts.join(\", \");\n\n// Return a single item with the concatenated text\nreturn [{ json: { mergedText: concatenated } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        832,
+        -80
+      ],
+      "id": "2368d3f3-7d5d-4742-82e6-5799aba8dc0d",
+      "name": "Join Ideas"
+    },
+    {
+      "parameters": {
+        "keep": "lastItems"
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        848,
+        512
+      ],
+      "id": "25eae000-4470-4127-931c-a6ecd52b751d",
+      "name": "Pick One"
+    },
+    {
+      "parameters": {
+        "content": "# Auto Posting",
+        "height": 300,
+        "width": 1548,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        416,
+        416
+      ],
+      "typeVersion": 1,
+      "id": "0f246283-abf3-4d46-91ef-8b709bbe3a49",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.twitter",
+      "typeVersion": 2,
+      "position": [
+        2320,
+        576
+      ],
+      "id": "ea6a438c-6fe9-49b2-9221-1d7606008d36",
+      "name": "X",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8a4260ba-3bde-4444-8f42-8a8abd51ff0c",
+              "name": "ImageURL",
+              "type": "string",
+              "value": "={{ $json.original_url }}"
+            },
+            {
+              "id": "1953ae03-6a86-4847-8686-5a928637be1d",
+              "name": "Caption",
+              "type": "string",
+              "value": "={{ $('Get Ready Posts').item.json[' text '] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "26be96aa-a802-4b55-a442-58fcfac12afd",
+      "name": "Prepare Data for Instagram API",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        2560,
+        592
+      ],
+      "typeVersion": 3.4,
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v22.0",
+        "node": "17841473009917118",
+        "edge": "media",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "caption",
+                "value": "={{ $json.Caption }}"
+              },
+              {
+                "name": "image_url",
+                "value": "={{ $json.ImageURL }}"
+              }
+            ]
+          }
+        }
+      },
+      "id": "b3d85746-b13a-46d0-b71b-8e950cc4eb3b",
+      "name": "Create Instagram Media Container",
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "position": [
+        2768,
+        592
+      ],
+      "typeVersion": 1,
+      "disabled": true
+    },
+    {
+      "parameters": {},
+      "id": "89d88a7c-cc7c-47b6-a1f8-4c2ac67aa8d1",
+      "name": "Wait for Container Processing",
+      "type": "n8n-nodes-base.wait",
+      "position": [
+        2960,
+        576
+      ],
+      "webhookId": "1b14c8bf-151a-4054-8215-093dd5b6cbcc",
+      "typeVersion": 1.1,
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v22.0",
+        "node": "17841473009917118",
+        "edge": "media_publish",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "creation_id",
+                "value": "={{ $json.id }}"
+              }
+            ]
+          }
+        }
+      },
+      "id": "eda757a6-1f3f-4fb5-8db2-f5e692c85abb",
+      "name": "Publish Post to Instagram",
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "position": [
+        3168,
+        576
+      ],
+      "typeVersion": 1,
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Twitter & Instagram",
+        "height": 260,
+        "width": 1120
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2256,
+        528
+      ],
+      "typeVersion": 1,
+      "id": "3b8177c5-0c03-49b1-9786-a1aa55e652e4",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "# 🛠️ Setup Guide  \n**Author:** [Oleg Melnikov](https://www.youtube.com/@Oleg-Melnikov)\n\nThis guide will walk you through the 7 steps to fully configure your automation workflow using Google Sheets, Google Drive, Anthropic, OpenAI, Perplexity AI and LinkedIn.\n\n---\n\n## ✅ Step 1: Set Up Google Sheets Credential\n1. In the n8n Google Sheets node create a new credential using your Google account\n\n---\n\n## ✅ Step 2: Set Up Google Drive Credential\n1. Go to the [Google Cloud Console](https://console.cloud.google.com) and create or select a project\n2. Enable the Google Drive API under APIs & Services > Library\n3. Still in APIs & Services, select Credentials from the left menu\n4. Click + CREATE CREDENTIALS > OAuth client ID\n5. For Application type, choose Web application\n6. Under Authorized redirect URIs, paste the OAuth Redirect URL: https://oauth.n8n.cloud/oauth2/callback\n7. Click Create, then copy the Client ID and Client Secret shown in the modal\n8. In the n8n Google Drive node click Create Credential\n9. Paste in the Client ID and Client Secret from Google Cloud\n10. Click Sign in with Google, complete the OAuth consent flow, then Save your credential\n\n---\n\n## ✅ Step 3: Set Up Anthropic Credential\n1. Navigate to the [Anthropic Console](https://console.anthropic.com/) and sign in or sign up\n2. Generate an API key\n3. In the n8n \"Anthropic Chat Model\" node click Create Credential, past the API key and save\n\n---\n\n## ✅ Step 4: Configure OpenAI via HTTP Request Node\n1. Visit the [OpenAI API Keys](https://platform.openai.com/account/api-keys) page and create a new secret key\n2. In the n8n OpenAI Image node in the Authentication select Generic Credential Type\n3. In Generic Auth Type select Header Auth\n4. Create a new Header Auth, Name = Authorization, Value = Bearer YOUR_TOKEN\n\n---\n\n## ✅ Step 5: Configure Perplexity AI via HTTP Request Node\n1. Go to the [Perplexity API Portal](https://www.perplexity.ai/account/api/keys) and click Create Key\n2. Copy the generated API key\n3. Inside n8n, in the sub-workflow, open the Perplexity Research node\n4. In the Authentication select Generic Credential Type\n5. In Generic Auth Type select Header Auth\n6. Create a new Header Auth, Name = Authorization, Value = Bearer YOUR_TOKEN\n\n---\n\n## ✅ Step 6: Set Up LinkedIn Credential\n1. In the n8n LinkedIn node create a new credential using your LinkedIn account\n\n---\n\n## ✅ Step 7: Customize The System For Your Use Case\n1. In the Idea Generator node adjust the prompts to reflect your content style and your topics\n2. Create a folder in your Google Drive where you will store all the images\n3. Put in that folder the image with the style of your brand, that you want to replicate every time\n4. Paste the shared link to this image in the \"Image Style\" node\n5. In the OpenAI Image node adjust the prompt to reflect your image style\n6. Copy my [Google Sheet](https://docs.google.com/spreadsheets/d/1-F3ZioIs3oWOKMyDPMuquaH-qiuaZs6qdZXP-yNeRbs/edit?usp=sharing)\n7. Select your Google Sheet in the Google Sheets nodes\n8. Activate the system, now every day a new post will be created inside the Google Sheet, and once you've reviewed it (might edit it as well), set the status to \"ready\" and it will be posted; the posting mechanism is set to work every day, one post at a time\n\n---\n\nNow you're ready to run your workflow. Happy automating!\n",
+        "height": 1800,
+        "width": 720
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -368,
+        -176
+      ],
+      "id": "57c05441-4762-4bda-be7b-537f0ea2df34",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1-_8JPD6n1yZCAZing76Qlg7zLSIw-1CPiZ5DqRN4AxM",
+          "mode": "list",
+          "cachedResultName": "CHEAT LINKS",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-_8JPD6n1yZCAZing76Qlg7zLSIw-1CPiZ5DqRN4AxM/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-_8JPD6n1yZCAZing76Qlg7zLSIw-1CPiZ5DqRN4AxM/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        624,
+        -80
+      ],
+      "id": "f55079bc-0765-420c-8438-b1993c0809cd",
+      "name": "Get Past Ideas",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "kLAFQxQdYoImG8Nx",
+          "name": "Google Sheets account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "name": "={{ $('Idea Generator').item.json.output.name.replace(/[^a-zA-Z0-9 ]/g, '').replace(/ /g, '_') }}\n",
+        "driveId": {
+          "__rl": true,
+          "value": "My Drive",
+          "mode": "list",
+          "cachedResultName": "My Drive",
+          "cachedResultUrl": "https://drive.google.com/drive/my-drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1OI0VXTQ7cjcRmmXefTY55tSgNAHIFUgI",
+          "mode": "list",
+          "cachedResultName": "Saved images",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1OI0VXTQ7cjcRmmXefTY55tSgNAHIFUgI"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1728,
+        -96
+      ],
+      "id": "4515afdf-c34d-441a-a616-a7e070b64a38",
+      "name": "Save Image",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "pzCzUx2IvQGDNIiD",
+          "name": "Google Drive account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1-_8JPD6n1yZCAZing76Qlg7zLSIw-1CPiZ5DqRN4AxM",
+          "mode": "list",
+          "cachedResultName": "CHEAT LINKS",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-_8JPD6n1yZCAZing76Qlg7zLSIw-1CPiZ5DqRN4AxM/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 589335599,
+          "mode": "list",
+          "cachedResultName": "Sheet2",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-_8JPD6n1yZCAZing76Qlg7zLSIw-1CPiZ5DqRN4AxM/edit#gid=589335599"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $('Idea Generator').item.json.output.name }}",
+            "Idea": "={{ $('Idea Generator').item.json.output.idea }}",
+            "Title": "={{ $('Idea Generator').item.json.output.title }}",
+            " text ": "={{ $('Idea Generator').item.json.output.text }}",
+            "File Id": "={{ $json.webContentLink }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "File Id",
+              "displayName": "File Id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Idea",
+              "displayName": "Idea",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": " text ",
+              "displayName": " text ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        2032,
+        -96
+      ],
+      "id": "5dc2a390-1536-4417-ae79-ca41062abccf",
+      "name": "Save Post",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "kLAFQxQdYoImG8Nx",
+          "name": "Google Sheets account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 2.5
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        464,
+        512
+      ],
+      "id": "e0967189-2917-4d68-8e26-278551381099",
+      "name": "Schedule 2"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1-_8JPD6n1yZCAZing76Qlg7zLSIw-1CPiZ5DqRN4AxM",
+          "mode": "list",
+          "cachedResultName": "CHEAT LINKS",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-_8JPD6n1yZCAZing76Qlg7zLSIw-1CPiZ5DqRN4AxM/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 589335599,
+          "mode": "list",
+          "cachedResultName": "Sheet2",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-_8JPD6n1yZCAZing76Qlg7zLSIw-1CPiZ5DqRN4AxM/edit#gid=589335599"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        672,
+        512
+      ],
+      "id": "cccc217f-32b0-4d0b-b56d-c0ed89954303",
+      "name": "Get Ready Posts",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "kLAFQxQdYoImG8Nx",
+          "name": "Google Sheets account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.fileId }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1296,
+        496
+      ],
+      "id": "e9831673-f090-40b4-bc62-126ece7f7ecb",
+      "name": "Download Image",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "pzCzUx2IvQGDNIiD",
+          "name": "Google Drive account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "person": "w-SlhJ462M",
+        "text": "={{ $('Get Ready Posts').item.json[' text '] }}",
+        "shareMediaCategory": "IMAGE",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.linkedIn",
+      "typeVersion": 1,
+      "position": [
+        1520,
+        496
+      ],
+      "id": "82b40bf6-8f61-473d-939d-fafe085dd7af",
+      "name": "Publish Post",
+      "credentials": {
+        "linkedInOAuth2Api": {
+          "id": "YMkRv1qqUl33dxTN",
+          "name": "LinkedIn account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1-_8JPD6n1yZCAZing76Qlg7zLSIw-1CPiZ5DqRN4AxM",
+          "mode": "list",
+          "cachedResultName": "CHEAT LINKS",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-_8JPD6n1yZCAZing76Qlg7zLSIw-1CPiZ5DqRN4AxM/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1480148319,
+          "mode": "list",
+          "cachedResultName": "Sheet3",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-_8JPD6n1yZCAZing76Qlg7zLSIw-1CPiZ5DqRN4AxM/edit#gid=1480148319"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "DATA": "={{ $('Get Ready Posts').item.json.Name }}",
+            "output": "={{ $('Get Ready Posts').item.json.Title }}"
+          },
+          "matchingColumns": [
+            "DATA"
+          ],
+          "schema": [
+            {
+              "id": "DATA",
+              "displayName": "DATA",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "output",
+              "displayName": "output",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1744,
+        496
+      ],
+      "id": "26a92805-ffdb-4577-aeea-023515f55a74",
+      "name": "Update Status",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "kLAFQxQdYoImG8Nx",
+          "name": "Google Sheets account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        816,
+        128
+      ],
+      "id": "3b3fd469-7e14-4542-a970-f5703ee89ba7",
+      "name": "Google Gemini Chat Model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "r03r6Mwi8OqYTa0g",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        448,
+        -80
+      ],
+      "id": "71b8523c-3e6a-4306-847a-9144d20aea38",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-flash-image",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-flash-image (Nano Banana)"
+        },
+        "prompt": "=const prompt = `Image: {{ $json.output.image }}\n\nIdea/Text: {{ $json.output.title }}\n\nGenerate a professional image incorporating both the visual style and text prominently.`;",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        1488,
+        -96
+      ],
+      "id": "9d7cc663-7ec4-480d-ada2-20ec3e631aa4",
+      "name": "Generate an image",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "18qYACZPPv2uOndy",
+          "name": "Google Gemini(PaLM) Api account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get the URL from the previous node\nconst url = $input.first().json['File Id']; // Change 'File_id' to your actual field name\n\n// Extract File ID\nlet fileId;\n\n// Try different URL formats\nif (url.includes('/d/')) {\n  // Format: https://drive.google.com/file/d/FILE_ID/view\n  fileId = url.match(/\\/d\\/([a-zA-Z0-9_-]+)/)[1];\n} else if (url.includes('?id=')) {\n  // Format: https://drive.google.com/open?id=FILE_ID\n  fileId = url.match(/[?&]id=([a-zA-Z0-9_-]+)/)[1];\n} else {\n  // Assume it's already just the ID\n  fileId = url.trim();\n}\n\n// Return the result\nreturn {\n  json: {\n    fileId: fileId,\n    original_url: url\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1072,
+        512
+      ],
+      "id": "1afb040a-f517-496e-b26a-53bd13f27411",
+      "name": "Code in JavaScript"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Idea Generator": {
+      "main": [
+        [
+          {
+            "node": "Generate an image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Idea Generator",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Perplexity Research": {
+      "ai_tool": [
+        [
+          {
+            "node": "Idea Generator",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Join Ideas": {
+      "main": [
+        [
+          {
+            "node": "Idea Generator",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pick One": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Data for Instagram API": {
+      "main": [
+        [
+          {
+            "node": "Create Instagram Media Container",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Instagram Media Container": {
+      "main": [
+        []
+      ]
+    },
+    "Wait for Container Processing": {
+      "main": [
+        []
+      ]
+    },
+    "Get Past Ideas": {
+      "main": [
+        [
+          {
+            "node": "Join Ideas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save Image": {
+      "main": [
+        [
+          {
+            "node": "Save Post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule 2": {
+      "main": [
+        [
+          {
+            "node": "Get Ready Posts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Ready Posts": {
+      "main": [
+        [
+          {
+            "node": "Pick One",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download Image": {
+      "main": [
+        [
+          {
+            "node": "Publish Post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Publish Post": {
+      "main": [
+        [
+          {
+            "node": "Update Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Idea Generator",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Get Past Ideas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate an image": {
+      "main": [
+        [
+          {
+            "node": "Save Image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Download Image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save Post": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "baa86459-e1f2-43e1-b646-46def9f725f9",
+  "meta": {
+    "instanceId": "1211e76ce272d2b966e71c0cd5143262c7caf68b17e40d674c6c435af5688233"
+  },
+  "id": "W7LGYiVyro4JDOwo",
+  "tags": []
+}
